@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Gift for Hema 💜</title>
+    
+    <style>
+        /* --- Google Font --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        /* --- General Styles & Variables --- */
+        :root {
+            --lavender: #e6e6fa;
+            --sky-blue: #87ceeb;
+            --dark-purple: #483d8b;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--lavender), var(--sky-blue));
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        /* --- Utility Classes --- */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* --- PIN Lock Screen Styles --- */
+        #pin-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(230, 230, 250, 0.9), rgba(135, 206, 235, 0.9));
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .pin-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .pin-container h2 {
+            color: var(--dark-purple);
+            margin-bottom: 10px;
+        }
+
+        .pin-container p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #pin-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid var(--lavender);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            outline-color: var(--dark-purple);
+            -webkit-text-security: disc; /* Hides the PIN characters */
+            text-security: disc;
+        }
+
+        #pin-submit {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: var(--dark-purple);
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        #pin-submit:hover {
+            background: #6a5acd;
+        }
+        
+        #pin-error {
+            color: red;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* --- Floating Hearts Animation --- */
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            color: rgba(255, 182, 193, 0.6);
+            pointer-events: none;
+            animation: floatUp 8s linear infinite;
+            z-index: 9999;
+            top: 100vh;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-110vh); opacity: 0; }
+        }
+
+        /* --- Homepage Styles --- */
+        #homepage {
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin: 30px 0;
+            color: var(--dark-purple);
+            animation: fadeInDown 1s ease-in-out;
+        }
+        
+        .intro-paragraph {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .profile-pic-container {
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 25px;
+            border: 5px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: glow 3s infinite alternate;
+            object-fit: cover;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 4px 15px rgba(72, 61, 139, 0.3), 0 0 10px #fff, 0 0 20px var(--lavender);
+            }
+            to {
+                box-shadow: 0 4px 20px rgba(72, 61, 139, 0.5), 0 0 20px #fff, 0 0 30px var(--sky-blue);
+            }
+        }
+
+        .mood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .mood-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 20px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--dark-purple);
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mood-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- Story & Memories Section --- */
+        .memories-section, .story-section {
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            margin-top: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .memories-section h2, .story-section h2 {
+            font-size: 2em;
+            color: var(--dark-purple);
+            margin-bottom: 30px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .photo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .photo-item {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover { transform: scale(1.03); }
+
+        .photo-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-item .caption {
+            padding: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* --- Scroll Fade-in Animation --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin: 50px 0 30px 0;
+            color: var(--dark-purple);
+            font-style: italic;
+        }
+
+        /* --- Mood Page Styles --- */
+        .mood-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .mood-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mood-content img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .mood-content h2 {
+            color: var(--dark-purple);
+            margin-bottom: 15px;
+        }
+
+        .mood-content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            background: var(--dark-purple);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .back-link:hover { background: #6a5acd; }
+        
+        .care-package {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .care-package h4 {
+            margin-bottom: 10px;
+            color: var(--dark-purple);
+        }
+
+        .care-package ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .care-package li { margin-bottom: 8px; }
+
+        .action-button {
+            background: #ffb6c1;
+            color: var(--dark-purple);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            background-color: #ff9aab;
+        }
+
+        .hug-message {
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--dark-purple);
+            font-weight: 600;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================= PIN LOCK SCREEN (NEW) ======================= -->
+    <div id="pin-screen">
+        <div class="pin-container">
+            <h2>A Secret Just For You 💌</h2>
+            <p>Please enter our special code.</p>
+            <input type="password" id="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+            <button id="pin-submit">Unlock</button>
+            <p id="pin-error" class="hidden">Wrong code, try again!</p>
+        </div>
+    </div>
+
+    <!-- ======================= MAIN CONTENT (HIDDEN INITIALLY) ======================= -->
+    <div id="main-content" class="hidden">
+        
+        <!-- Homepage Section -->
+        <div id="homepage">
+            <header>
+                <h1>💌 Namastee madamm 🤭💗, yav tara mood ide ivaga ?? </h1>
+            </header>
+            
+            <p class="intro-paragraph"> 
+                gothu nin nanna miss madkothyaa thumba anthaa , so this veryy special gift for uh !! mudduuu , nav yavagluu signal ali caht madthrithivii but nan en adru thumba busy idu reply madake agilla andaga or ningeee bejar adaga idna nodli anthaa ready madidinii , yavaga gothaa hostel ge ogokuu ondh week munche indaa i.e fromm 29th sep , uk nan almostt yela time alinuu ninge message madthinii but enukadruu madok agilla andaga ninge lonely feel ansbarduu anthaa iduuu 💕🤭 and en rule gotha idna nin yavaga yela open madthyaa aa date with timings nangee signal ali text madbekuu okayy thanee ?? 
+            </p>
+
+            <main>
+                <div class="profile-pic-container">
+                    <img src="us.jpg" alt="You and Hema" class="profile-pic">
+                </div>
+
+                <nav class="mood-buttons">
+                    <a class="mood-card" onclick="showMoodPage('mood-periods')">🌸 When you're on periods</a>
+                    <a class="mood-card" onclick="showMoodPage('mood-lonely')">💫 When you feel lonely</a>
+                    <a class="mood-card" onclick="showMoodPage('mood-miss')">❤️ When you miss me</a>
+                    <a class="mood-card" onclick="showMoodPage('mood-stressed')">🌙 When you're stressed</a>
+                    <a class="mood-card" onclick="showMoodPage('mood-happy')">🍫 When you're happy</a>
+                </nav>
+
+                <section class="memories-section fade-in">
+                    <h2>Our Memories 📷💜</h2>
+                    <div class="photo-grid">
+                        
+                        <div class="photo-item fade-in">
+                            <img src="pic1.jpeg" alt="Memory 1">
+                            <p class="caption">First meet ( nim jothe bike ride) - Aug 11th</p>
+                        </div>
+                        <div class="photo-item fade-in">
+                            <img src="pic2.jpg" alt="Memory 2">
+                            <p class="caption">ourr fav iskcon visit - Aug 18th!</p>
+                        </div>
+                         <div class="photo-item fade-in">
+                            <img src="pic3.jpg" alt="Memory 3">
+                            <p class="caption">Birthday celebrations - AUG 22 💗</p>
+                        </div>
+                        <div class="photo-item fade-in">
+                            <img src="pic4.jpg" alt="Memory 4">
+                            <p class="caption">my very first visit to ragahvendra mutt - sep 1</p>
+                        </div>
+                        <div class="photo-item fade-in">
+                            <img src="pic5.jpg" alt="Memory 5">
+                            <p class="caption">Sudden meeting - sep 26th </p>
+                        </div>
+
+                    </div>
+                </section>
+                
+                <section class="story-section fade-in">
+                    <h2>The story behind all this</h2>
+                    <p>
+                        Nange munche idanu idea ithuu like ithara gift kodbeku ningee Nan hostel ge ogokuu munchee anthaa but idna ready madodee marthogidee , Nan hostel ge ogokuu ondh week munchee idela nenp agii ready madokee start madde , idna ready madana andree nanngee free time sigthanee irlilla , last week alwaa manelii hostel packing , shopping , office pooje , amele haircut en enoo kelsaa barthanee ithuu adruu ningee idna kodde hostel ge odree nange samadana irala anthaaa , ondh 5min free idrunuu idee ready madoo kelsa ne madthidee , late night yelaa yeddu work madthidee , itharaa yelaa deadlines alii Nan jastii work idkonala bega mugusthinii but idondee late aythuu , adruuu en prblm elaa ithara challenges naa solve madii win agbekuu soo 1 week time alii istond busy idunuu idna ready madidinii , gothilla ninge ista aguthoo ilwoo , ondh 2 times nodud mele mathe nodoke bore aguthee ansuthee but nan urgent alii en en type madidnii nange nenpilla but spelling mistake thumba iruthee laptop ali speed typing kasta alwaa soo and nav estond sari meet adaga pics thagond ela so aste pics hakoke agiduuu !! hope you love it papuuu 😘💘🫂
+                    </p>
+                </section>
+            </main>
+            
+            <footer>
+                <p>Made with lovee , by honey gumma 🤭 ( SHREE 😎 ) </p>
+            </footer>
+        </div>
+        
+        <!-- Mood Page: Periods -->
+        <div id="mood-periods" class="mood-page hidden">
+            <div class="mood-content">
+                <img src="us.jpg" alt="Comforting photo">
+                <h2> helloo madam , yepp i can see ur pain 🫂.</h2>
+                <p>
+                    nav iibru periods aythu antha bejar agodukinaa jasti kkushi padbekuu becausee ninge periods agide finally 😭😭, thank god for the good health , nenp ide alwaa 2025 ali august mathe september month continous agi ninge periods skip agithuu , so ivaga nin idna open madidya andre mood swings iruthe ninne helide nange nam relatisnhip starting ali ninge periods adaaga yaru distrub madbardu anthaa , so nin nanege message madala ankothidinii [ idna type madiroduu 29/9/2025 so future tense ] , ivaga gothu papu jasti nidde madthriuthee , adukinaa jastii suffer madthiruthe antha 😭😭 , so take good care papuu , rest maduu neat agii niv thumba strong antha bere helidirii soo en worry ela 🫀🫂 ."Just a reminder that your honey is also suffering here as u r suffering comfortable.further next message signal aliruthee checkk madii madam .En ansthidee gotha nange ivaga ninna huh madbekuuu , ninna samadana madbekuu , to hold you in my arms and make all that pain disappear anthaa 😭😭♥️♥️ Ninge en negative thoughts bandruu , mood swings adruu , overthinking madthidreee this lines below are for you kanda ❤️🥺 and i truly mean it :<br><br>
+                    ನಗುವು ಅಳುವು ಏನಿರಲಿ <br>
+                    ನಿನ್ನ ಜೊತೆ ಇರುವೆ ❤️🥺🫂<br>
+                    ಬಿಟ್ಟು ಬಿಡದ ಕೋರಿಕೆಯ ಬಿಡದೆ ತೀರಿಸುವೆ 💟🫴🏻<br>
+                    ತೊದಲ ಮಾತು ಮೃದುಲ ನಡಿಗೆ ಹುಸಿಯ ಕೋಪ ನಿನ್ನ ಗುರುತು ಉಸಿರಾಗಿರುವೆ.. 😭😭💕<br>
+                    ಜೋಜೋ ಲಾಲಿ ಜೋಜೋ..<br>
+                    ನಾನು ನಿನ್ನಡಿ ಆಳು 🙇🏻♂️❤️<br>
+                    ನಿನ್ನ ಪಾದದ ಧೂಳು 🙇🏻♂️💕<br>
+                    ನನ್ನ ಮಡಿಲು ನನ್ನ ಹೆಗಲು 😚❤️🫂<br>
+                    Love you so muchh 💕🫂 my jaanu 💗, my love 😘 and my evyerthingg 🫀💘 . Just rest, have some chocolate ( in the care package!🤭🤭)
+                </p>
+                <div class="care-package">
+                    <h4>A little care package for you:</h4>
+                    <ul>
+                        <li>🧸 fruit juice 😁</li>
+                        <li>🍫 Your favorite chocolate</li>
+                        <li>☕ A warm cup of water</li>
+                        <li>🤭 panipurii </li>
+                        <li>🍗chicken biryanii </li>
+                        <li>💗a lots and lots of love and care </li>
+                        <li> a tonsss of hugs and kisses 😘🫂💕 </li>
+                        <li>🎬 Our favorite movie ready to play</li>
+                    </ul>
+                </div>
+                <button id="hugButton" class="action-button">Click for an extra hug 🤗</button>
+                <p id="hugMessage" class="hug-message hidden">Sending you the biggest hug mudduu gumma 🤭💗</p>
+                <a class="back-link" onclick="showHomepage()">← Go back home</a>
+            </div>
+        </div>
+        
+        <!-- Mood Page: Lonely -->
+        <div id="mood-lonely" class="mood-page hidden">
+            <div class="mood-content">
+                <img src="us.jpg" alt="Close together photo">
+                <h2>Even when we're apart...</h2>
+                <p>
+                    Nan muddu ee lonely feeling baroke 100000% chancee yeee elaaa , yakandree avr honeyy Nan idiniii 🤭🤭 , adruu bandide andreee enoo 0.1% asteee 😁😁, adna nim honey jothee ondhe ondh sarii call ali mathadudree sarii ogutheee madamm dnot worryy 😚😚 , so ivaga en madbekuu andreee just think of me holding your hand 🤭, talking to you 😚 making you smile ♥️🤭 And hostel aliroo nim honeyy gee msg madii amele call alii mathadiii avaga yelaaa loneliness kudaa sari ogutheee !!! . Anyway nenp idkoo " nin yavathuu oble ala papuu , nin jothe nan idinii , irthinii yavgluuu 🫂♥️ , Nan nin jothe physical agii jothe ali ela astee but nan eyess , heart yelaa nin jothee nee ide alwaa 🤭🤭🤭 , soo you aree never alone myy baby girllll 😚🫂♥️,ninne helidyaa bere Nan dance madoduu nododnaa andree thumbaa istaa anthaa so ivaga begaa signal app open madii Nan dancee videp nodii swlpaa restt maduu mudduu 🤭🤭 gothuu aa dance astond chennagillla anthaa 😭😭 loveee youu soo sooo much jaannuuu , my papuuu 💋 , Nan hendthii 🙈🙈🙈🙈🙈🙈🙈 and my everything ♥️😚🫂 ,
+                </p>
+                <a class="back-link" onclick="showHomepage()">← Go back home</a>
+            </div>
+        </div>
+
+        <!-- Mood Page: Miss Me -->
+        <div id="mood-miss" class="mood-page hidden">
+            <div class="mood-content">
+                <img src="us.jpg" alt="A special memory">
+                <h2>I miss you more.</h2>
+                <p>
+                    Gothu pappuu nin nanna thumbaa miss madkothidyaaa anthaa 😭♥️ , but ninguu gothuu alwaa Nan ninna , amma appa mama atthe yelarnuuu estt miss madkothidinii anthaaa 😭😭 , ninn urigee or bng ge odaga yelaaa or even nin clg ge odagluu nangee ansthithuu avaga manege barthyaaa ninuu anthaa yake gothaaa , ninu maneli iduu nanu manelii idree ontharaaa ibruu thumbaaa andree thumbaa atra idivii anoo feeling nangee irthithuu 🫠♥️ but ivaga innu atra idiviii because physical distance astee jastii agiroduu nav innu jastii close agthidiviii 🤭🤭 , No matter the distance, you live in my heart 🫀 in my thoughts💋, in everything I do 😚😚 , nenp idkoo I will always be waiting very eagerly to see you in real 🥺 , to hold your handsss 😭😭♥️ gothalwaaa estt istaa nange nin hands hold madodu anthaa 🤭❤️❤️ nan yavagluu adnee nenp madkothirthinii gothaa iskon ge odaga anthuu🫠🫠🫠🫀❤️ mathe meet agovarguu , let’s carry each other in our hearts like we are already doing 🤭🤭, because love like ours doesn’t get weaker with distance—it only grows stronger.” 😚💋♥️🫀❤️ Myy fav lyrics from my fav song for my favv humann 🫠💟: <br><br>
+                    ಮಲ್ಲಿಗೆ ಮಂಟಪವಾ.. <br>
+                    ನನ್ನ ಮನಸಲ್ಲಿ ಕಟ್ಟಿಸುವೆ ♥️🥺 <br>
+                    ಅಂದದ ಸಿರಿದೇವಿಯಾ.. <br>
+                    ಅಲ್ಲಿ ಬಚ್ಚಿಟ್ಟು ಪೂಜಿಸುವೆ..💕🤞🏻 <br>
+                    ಭುವಿಯ ಹಸಿರಿನಂತೆ <br>
+                    ಈ ಪಾದದಡಿಗೆ ಇರುವೆ 💋♥️ <br>
+                    ಮಳೆಯ ಮೋಡದಂತೆ <br>
+                    ಆ... ಸುಡುವ ಬಿಸಿಲ ತಡೆವೆ <br>
+                    ಬಾಳಾ ತುಂಬಾ ನಾ ಬರುವೆ.. <br>
+                    ಹಸ್ತಕೆ ರೇಖೆಯ ಹಾಗಿರುವೆ 💟🫂 <br>
+                    ಚಂದಾಚಂದದ ಸೇವಂತಿಯಾ..ಆಆ <br>
+                    ಅಂದಕೆ ಕಾವಲು ನಾನಿರುವೆ 🫠😚♥️
+                </p>
+                <a class="back-link" onclick="showHomepage()">← Go back home</a>
+            </div>
+        </div>
+
+        <!-- Mood Page: Stressed -->
+        <div id="mood-stressed" class="mood-page hidden">
+            <div class="mood-content">
+                <img src="us.jpg" alt="A calm or funny moment">
+                <h2>Take a deep breath.</h2>
+                <p>
+                    Gothuu papuu ninge stress agiruthee anthaaa yakandree yavagluu helthirthyaa call maddaga ee assignments and exams yar invite madudroo anthaa 🤭🤭 , ningee thumbaa assignments, amele morng class , extra class and niddee miss agiruthee so stress ansthirutheee butt remember mudduu etharaa estond sarii ansiruthee ningee and even nangu ansiruthee adre nav ibruu aaa moment naa face madii munde bandidivii alwaa 😁💟 , samee ade tharaa ee moment naa kuda face madii mundee ogana and ogtivii so dnot feel stress babyy and most imp en andree no of stress or difficulty can take away the love I feel for you mudduuu ❤️🥺🥺. I don’t want you to carry all the burden alone 😭😭—nan atra nu share madthyaa and madbekuu astee , lets face everything together , you know that I am ur safest place and you r mine anthaa 😚❤️🫂 , Yavagluu nin strong agirbekuu yelanuu bega begaa face madbekuuh anthaa Nan helalaa yakandree nan nin jothe idinii , nin jothee yelanuu face madthinii 😚♥️ estondd yelaa acheive madidyaa , est hardwork madthyaaa ninuu woww greattt 😚❤️ , begaa yedolthyaaa 🤭 , clg ge ogi banduu assignments barkonduu odkothyaa 🫠❤️ and innu estond kelsa madthyaaa , so proud of u my girll for all those 😘😘 , not everybody can do thatt !! This stress will also pass soon babyy dnot worry !! You have your honeyy with you every second 😘❤️ Remember : <br><br>ಒಂದೊಂದು...<br>
+                    ಖುಷಿಗೂ ಇಂದು....<br>
+                    ನಾ...ನಿಡುವ.......<br>
+                    ಹೆಸರೆ ನಿಂದು....🤭🤭 <br>
+                    Cozz u r my home and my happiness kandaa 😚♥️🫀 Loveee youu soo soo much papuu 💋♥️💕🫀
+                </p>
+                <a class="back-link" onclick="showHomepage()">← Go back home</a>
+            </div>
+        </div>
+        
+        <!-- Mood Page: Happy -->
+        <div id="mood-happy" class="mood-page hidden">
+            <div class="mood-content">
+                <img src="us.jpg" alt="A happy memory">
+                <h2>Your smile is my favorite!</h2>
+                <p>
+                    Wowwwwww 🫠🫠🫠♥️ , nin happyyy agidyaa andree I am the most happiestttt Birthday rn 🥳🥳♥️. Tbh your happiness is my fav thing ever gothaa 🤭 , photos alii nin smile madiroduu nodudree aste yakee Nan mundee idaga nin smile na real agii noddaga yelaa nangee " yeno yenoo agidee song baruthee 🤭🤭" , nin smileee nangee thumbaa istaa and aduu bere avrguu ista aguthee but bere boys ge istaa agbarduu , ista adruu avr adnee swlpa time admele marthogbekuu aste 😭😭😭, ibruu ondhe clg ali irbekithuu avaga ,ninna and aa ninn cute smile naa dailyy nodbodithuu 🫠♥️, but adruu en prblm elaa swlpa years admele future alii yavagluu nodthinii and innu Dodd kushii en gothaa avagaa aa smile gee nanne reason kuda agirthinii 🤭🤭♥️ , aww nin jothee future naa imagine madkondrene estt kushii agthidee andree 😁🙈🙈♥️♥️♥️ anwayy i alwayss want to be the reason for your smilee , the one who can add more sweetness to thatt very cutee smilee 😁😁, !! You deserve this happiness every second babyy because you got the purest soull and I am soo proud for being your honeyy 🤭🤭❤️ , and dnot forget to share everything with mee coz u know u r happiness is mine too 😁😁♥️!! Loveee youu soo muchh papuuu 💋❤️ , heege kushii agiruu yavagluuu 🫂💟
+                </p>
+                <a class="back-link" onclick="showHomepage()">← Go back home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- PIN LOCK LOGIC ---
+            const CORRECT_PIN = "2209"; // Your secret PIN is set!
+            
+            const pinScreen = document.getElementById('pin-screen');
+            const mainContent = document.getElementById('main-content');
+            const pinInput = document.getElementById('pin-input');
+            const pinSubmit = document.getElementById('pin-submit');
+            const pinError = document.getElementById('pin-error');
+            const pinContainer = document.querySelector('.pin-container');
+
+            function checkPin() {
+                if (pinInput.value === CORRECT_PIN) {
+                    pinScreen.style.transition = 'opacity 0.5s';
+                    pinScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        pinScreen.classList.add('hidden');
+                        mainContent.classList.remove('hidden');
+                        startHearts(); // Start the hearts only after unlocking
+                    }, 500);
+                } else {
+                    pinError.classList.remove('hidden');
+                    pinContainer.classList.add('shake');
+                    pinInput.value = "";
+                    setTimeout(() => {
+                        pinContainer.classList.remove('shake');
+                    }, 500);
+                }
+            }
+
+            pinSubmit.addEventListener('click', checkPin);
+            pinInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    checkPin();
+                }
+            });
+
+            // --- MAIN WEBSITE LOGIC ---
+            const hugButton = document.getElementById('hugButton');
+            const hugMessage = document.getElementById('hugMessage');
+
+            if (hugButton) {
+                hugButton.addEventListener('click', () => {
+                    hugMessage.classList.remove('hidden');
+                    hugButton.style.display = 'none';
+                });
+            }
+
+            const homepage = document.getElementById('homepage');
+            const moodPages = document.querySelectorAll('.mood-page');
+            
+            window.showMoodPage = (moodId) => {
+                homepage.classList.add('hidden');
+                moodPages.forEach(page => page.classList.add('hidden'));
+                const activePage = document.getElementById(moodId);
+                if (activePage) {
+                    activePage.classList.remove('hidden');
+                }
+                window.scrollTo(0, 0);
+            };
+
+            window.showHomepage = () => {
+                moodPages.forEach(page => page.classList.add('hidden'));
+                homepage.classList.remove('hidden');
+                window.scrollTo(0, 0);
+                if (hugButton && hugMessage) {
+                    hugMessage.classList.add('hidden');
+                    hugButton.style.display = 'inline-block';
+                }
+            };
+            
+            let heartInterval;
+            function startHearts() {
+                const body = document.querySelector('body');
+                const createHeart = () => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '💜';
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.animationDuration = `${(Math.random() * 3) + 5}s`;
+                    body.appendChild(heart);
+                    setTimeout(() => { heart.remove(); }, 8000);
+                };
+                if (!heartInterval) {
+                    heartInterval = setInterval(createHeart, 500);
+                }
+            }
+
+            const fadeElems = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElems.forEach(elem => { observer.observe(elem); });
+        });
+    </script>
+</body>
+</html>
+
